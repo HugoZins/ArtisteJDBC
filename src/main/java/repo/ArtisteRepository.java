@@ -7,12 +7,24 @@ import java.util.List;
 
 public class ArtisteRepository {
 
-	private static final String URL = "jdbc:mysql://localhost:3306/artistes";
+	private static final String URL = "jdbc:mysql://localhost:3306/cinema";
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
 
 	private Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(URL, USER, PASSWORD);
+	}
+
+	public void resetDatabase() throws SQLException {
+		try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+
+			stmt.executeUpdate("DELETE FROM artiste");
+
+			stmt.executeUpdate("INSERT INTO artiste (id, nom, prenom, annee_naissance) VALUES "
+					+ "(1, 'Hugo', 'Victor', 1802), " + "(2, 'Rowling', 'JK', 1965), "
+					+ "(3, 'DiCaprio', 'Leonardo', 1974), " + "(4, 'Spielberg', 'Steven', 1946), "
+					+ "(5, 'Nolan', 'Christopher', 1970), " + "(6, 'Prevert', 'Jacques', 1970)");
+		}
 	}
 
 	public void checkAndCreateTable() throws SQLException {
